@@ -1,0 +1,36 @@
+.loginContainer {
+	margin: 10%;
+	border: 1px solid #000000;
+	padding: 5%;
+	width: 50%;
+	margin-left: 25%;
+	height: 370px;
+}
+
+.loginDiv {
+	width: 80%;
+	margin-left: 12%;
+}
+
+.passwordInput {
+	padding-top: 20px;
+}
+
+.loginButton {
+	padding-top: 20px;
+}
+
+.loginText {
+	padding-top: 10px;
+	text-align: center;
+}
+
+.errorText {
+	padding-top: 20px;
+}
+
+.errorText p {
+	color: red;
+	font-size: 14px;
+	letter-spacing: normal;
+}

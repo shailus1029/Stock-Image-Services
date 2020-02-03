@@ -1,0 +1,51 @@
+.searchBarDiv {
+	height: 50px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 50px;
+	padding-top: 30px;
+}
+
+.searchItem {
+	width: 19%;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.searchInput {
+	width: 90%;
+	height: 40px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.searchButton {
+	width: 100%;
+}
+
+.ant-calendar-picker {
+	width: 90% !important;
+}
+
+.imageGallery {
+	height: 1000px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding: 5%;
+	overflow: auto;
+}
+
+.imageGallery div {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.singleImageCard {
+	width: 250px;
+	padding-top: 20px;
+}
