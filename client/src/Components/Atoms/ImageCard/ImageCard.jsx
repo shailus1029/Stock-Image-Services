@@ -11,7 +11,7 @@ function ImageCard(props) {
 		});
 	}
 	return (
-		<Card hoverable style={{ width: 240, height: 350 }} cover={<img alt="example" height="225px" src={`http://localhost:9005${props.imageDetail.imageUrl}`} />}>
+		<Card hoverable style={{ width: 240, height: 350 }} cover={<img alt="example" height="225px" src={`http://localhost:3000${props.imageDetail.imageUrl}`} />}>
 			<Meta title={tagsData} description={props.imageDetail.descriptions} />
 		</Card>
 	);

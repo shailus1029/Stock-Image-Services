@@ -27,10 +27,10 @@ class appConfig {
 		});
 
 		this.app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
-		this.app.use("/", express.static(path.join(__dirname, "../client/build")));
+		this.app.use("/", express.static(path.join(__dirname, "../client/bundle")));
 
 		this.app.get("/", function(req, res) {
-			res.sendFile(path.join(__dirname, "../client/build/index.html"));
+			res.sendFile(path.join(__dirname, "../client/bundle/index.html"));
 		});
 	}
 }
