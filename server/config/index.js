@@ -6,8 +6,8 @@ class AppConfig {
 			secret: {
 				key: "Stock-Image-Service"
 			},
-			port: 9005,
-			baseUrl: "http://localhost:9005"
+			port: 3000,
+			baseUrl: "http://localhost:3000"
 		};
 	}
 }
