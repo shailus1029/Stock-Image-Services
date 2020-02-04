@@ -8,7 +8,40 @@
 .preview {
 	display: flex;
 	flex-direction: row;
-	height: 100px;
-	width: 100px;
-	justify-content: space-between;
+	width: 100%;
+	flex-wrap: wrap;
+	justify-content: start;
+}
+
+.uploadWrapper {
+	display: flex;
+	justify-content: center;
+	flex-direction: row;
+	padding: 30px;
+}
+
+.imagePreview {
+	height: 275px;
+	border: 1px solid;
+	margin: 10px;
+	width: 250px;
+}
+
+.descriptionInput {
+	margin-top: 20px;
+}
+
+.inputText {
+	width: 100%;
+	height: 40px;
+	font-size: 14px;
+}
+
+.backButton {
+	width: 200px;
+	padding-left: 25px;
+}
+
+.uploadBtn {
+	width: 200px;
 }

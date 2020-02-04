@@ -11,8 +11,24 @@ function ImageCard(props) {
 		});
 	}
 	return (
-		<Card hoverable style={{ width: 240, height: 350 }} cover={<img alt="example" height="225px" src={`http://localhost:3000${props.imageDetail.imageUrl}`} />}>
-			<Meta title={tagsData} description={props.imageDetail.descriptions} />
+		<Card
+			hoverable
+			style={{ width: 240, height: 350 }}
+			cover={
+				<img
+					alt="example"
+					width="240px"
+					height="225px"
+					src={
+						props.imageDetail && props.imageDetail.imageUrl ? `http://localhost:3000${props.imageDetail.imageUrl}` : ""
+					}
+				/>
+			}
+		>
+			<Meta
+				title={tagsData ? tagsData : ""}
+				description={props.imageDetail && props.imageDetail.descriptions ? props.imageDetail.descriptions : ""}
+			/>
 		</Card>
 	);
 }

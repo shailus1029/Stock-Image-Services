@@ -5,10 +5,11 @@
 	flex-wrap: wrap;
 	padding: 50px;
 	padding-top: 30px;
+	padding-bottom: 75px;
 }
 
 .searchItem {
-	width: 19%;
+	width: 16%;
 	padding-left: 10px;
 	padding-right: 10px;
 }
@@ -29,7 +30,7 @@
 }
 
 .imageGallery {
-	height: 1000px;
+	/* height: 1000px; */
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -48,4 +49,21 @@
 .singleImageCard {
 	width: 250px;
 	padding-top: 20px;
+}
+
+.noImageFoundText {
+	height: 400px;
+	width: 100%;
+	text-align: center;
+	font-size: 50px;
+	padding-top: 10%;
+}
+
+.dateDiv {
+	padding-left: 12px;
+}
+
+.searchbtn {
+	display: flex;
+	flex-direction: column-reverse;
 }

@@ -17,16 +17,19 @@ class SearchImages extends React.Component {
 			tags: "",
 			fromDate: "",
 			toDate: "",
-			arr: [1, 2, 3, 4, 5],
-			hasMoreItem: true,
-			images: []
+			images: [],
+			hasMoreItems: true,
+			pageNumber: 0,
+			pageSize: 5
 		};
+
+		this.showItems = this.showItems.bind(this);
+		this.handleUpload = this.handleUpload.bind(this);
 		this.handleTags = this.handleTags.bind(this);
 		this.handleToDate = this.handleToDate.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleFromDate = this.handleFromDate.bind(this);
 		this.handleDescription = this.handleDescription.bind(this);
-		this.handleLoadMoreImages = this.handleLoadMoreImages.bind(this);
 	}
 
 	componentDidMount() {
@@ -73,12 +76,8 @@ class SearchImages extends React.Component {
 		});
 	}
 
-	handleLoadMoreImages() {
-		const { arr } = this.state;
-		const newarra = arr.concat([1, 1, 1, 1, 1]);
-		this.setState({
-			arr: newarra
-		});
+	handleUpload() {
+		this.props.history.push("/upload");
 	}
 
 	handleSearch() {
@@ -92,54 +91,105 @@ class SearchImages extends React.Component {
 		this.props.searchImages(body);
 	}
 
-	handleLoadMoreImages() {}
+	showItems() {
+		const { pageNumber, pageSize } = this.state;
+		if (this.state.images.length > 0) {
+			var items = [];
+			const len =
+				(pageNumber + 1) * pageSize <= this.state.images.length
+					? (pageNumber + 1) * pageSize
+					: this.state.images.length;
+			for (let i = 0; i < len; i++) {
+				items.push(
+					<div key={i} className="singleImageCard">
+						<ImageCard imageDetail={this.state.images[i]} />
+					</div>
+				);
+			}
+		}
+		return items;
+	}
+
+	loadMore() {
+		const { pageNumber, pageSize } = this.state;
+		if ((pageNumber + 1) * pageSize === this.state.images.length && this.state.images.length !== 0) {
+			this.setState({ hasMoreItems: false });
+		} else if ((pageNumber + 1) * pageSize < this.state.images.length) {
+			setTimeout(() => {
+				this.setState({ pageNumber: pageNumber + 1 });
+			}, 2000);
+		}
+	}
 
 	render() {
-		const { images } = this.state;
-		const items = images.map(item => {
-			return (
-				<div className="singleImageCard">
-					<ImageCard imageDetail={item} />
-				</div>
-			);
-		});
 		return (
 			<div style={{ width: "100%" }}>
 				<div className="searchBarDiv">
 					<div className="searchItem">
-						<InputField value={this.state.descriptions} handleChange={this.handleDescription} placeholderText="Search By Description" />
+						<div>
+							<p>Description</p>
+						</div>
+						<InputField
+							value={this.state.descriptions}
+							handleChange={this.handleDescription}
+							placeholderText="Search By Description"
+						/>
 					</div>
 					<div className="searchItem">
-						<InputField value={this.state.tags} handleChange={this.handleTags} placeholderText="Search By Description" />
+						<div>
+							<p>Tags</p>
+						</div>
+						<InputField
+							value={this.state.tags}
+							handleChange={this.handleTags}
+							placeholderText="Search By Description"
+						/>
 					</div>
 					<div className="searchItem">
-						<DateField className="datePicker" handleDateChange={this.handleFromDate} placeholderText="From Date" />
+						<div className="dateDiv">
+							<p>From Date</p>
+						</div>
+						<DateField
+							value={this.state.fromDate}
+							className="datePicker"
+							handleDateChange={this.handleFromDate}
+							placeholderText="From Date"
+						/>
 					</div>
 					<div className="searchItem">
-						<DateField className="datePicker" handleDateChange={this.handleToDate} placeholderText="To Date" />
+						<div className="dateDiv">
+							<p>To Date</p>
+						</div>
+						<DateField
+							value={this.state.toDate}
+							className="datePicker"
+							handleDateChange={this.handleToDate}
+							placeholderText="To Date"
+						/>
 					</div>
-					<div className="searchItem">
+					<div className="searchItem searchbtn">
 						<ButtonField type="primary" btnClass="searchButton" buttonText="Search" handleChange={this.handleSearch} />
 					</div>
+					<div className="searchItem searchbtn">
+						<ButtonField type="primary" btnClass="searchButton" buttonText="Upload" handleChange={this.handleUpload} />
+					</div>
 				</div>
-				<div className="imageGallery">
-					<InfiniteScroll
-						pageStart={0}
-						threshold={10}
-						loadMore={() => {
-							console.log("load moree");
-						}}
-						// loadMore={this.handleLoadMoreImages.bind(this)}
-						hasMore={this.state.hasMoreItem}
-						// loader={
-						// 	<div className="loader" key={0}>
-						// 		Loading ...
-						// 	</div>
-						// }
-					>
-						{items}
-					</InfiniteScroll>
-				</div>
+				{this.state.images.length > 0 ? (
+					<div className="imageGallery" style={{ height: "700px", overflow: "auto" }}>
+						<InfiniteScroll
+							loadMore={this.loadMore.bind(this)}
+							hasMore={this.state.hasMoreItems}
+							loader={<div className="loader"> Loading... </div>}
+							useWindow={false}
+						>
+							{this.showItems()}
+						</InfiniteScroll>
+					</div>
+				) : (
+					<div className="noImageFoundText">
+						<p>No Images Found</p>
+					</div>
+				)}
 			</div>
 		);
 	}
