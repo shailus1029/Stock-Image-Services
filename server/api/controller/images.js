@@ -1,5 +1,3 @@
-import ImagesService from "../services/images";
-import rp from "request-promise";
 import ImageModel from "../../model/images";
 import sequelize from "sequelize";
 const Op = sequelize.Op;
@@ -33,11 +31,16 @@ class ImagesController {
 							[Op.or]: ORS
 						};
 					} else if (key === "descriptions") {
-						where.descriptions = { [Op.iLike]: `%${req.query.desc}%` };
+						where.descriptions = { [Op.iLike]: `%${req.query.descriptions}%` };
 					}
 				});
 
-				if (req.query.from && new Date(req.query.from) != "Invalid Date" && req.query.to && new Date(req.query.to) != "Invalid Date") {
+				if (
+					req.query.from &&
+					new Date(req.query.from) != "Invalid Date" &&
+					req.query.to &&
+					new Date(req.query.to) != "Invalid Date"
+				) {
 					where.created_at = { [Op.and]: { [Op.gte]: new Date(req.query.from), [Op.lte]: new Date(req.query.to) } };
 				} else if (req.query.from && new Date(req.query.from) != "Invalid Date") {
 					where.created_at = { [Op.gte]: new Date(req.query.from) };
@@ -52,7 +55,6 @@ class ImagesController {
 				});
 			})
 			.then(data => {
-				console.log("data ====>>>", data);
 				res.send(data);
 			})
 			.catch(err => {
@@ -66,16 +68,18 @@ class ImagesController {
 		for (let i = 0; i < req.files.length; i++) {
 			const image = {};
 			const fileName = req.files[i].originalname;
-			otherData.map(item => {
-				for (let key in item) {
-					if (key == fileName) {
-						image.descriptions = item[key].description;
-						image.tags = item[key].tags;
-						image.imageUrl = `/uploads/${req.files[i].filename}`;
-						imagesBody.push(image);
+			if (otherData.length > 0) {
+				otherData.map(item => {
+					for (let key in item) {
+						if (key == fileName) {
+							image.descriptions = item[key].description;
+							image.tags = item[key].tags;
+							image.imageUrl = `/uploads/${req.files[i].filename}`;
+							imagesBody.push(image);
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 		return ImageModel.bulkCreate(imagesBody)
 			.then(data => {

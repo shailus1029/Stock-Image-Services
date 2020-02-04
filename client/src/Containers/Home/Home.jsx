@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { testAction } from "../../Redux/Actions/homeAction.js";
 import "./Home.css";
 import axios from "axios";
+import ButtonField from "../../Components/Atoms/ButtonField/ButtonField.jsx";
+import LoadingScreen from "../../utils/LoadingScreen";
+import { Modal } from "antd";
 
 let fileObj = [];
 let fileArray = [];
@@ -14,14 +18,15 @@ class Home extends Component {
 		this.state = {
 			file: [null],
 			descriptions: [],
-			tags: []
+			tags: [],
+			loading: false,
+			showModal: false
 		};
-		this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
+		this.handleOk = this.handleOk.bind(this);
+		this.handleModal = this.handleModal.bind(this);
 		this.uploadFiles = this.uploadFiles.bind(this);
-	}
-
-	simpleAction(event) {
-		this.props.simpleAction();
+		this.handleListing = this.handleListing.bind(this);
+		this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
 	}
 
 	uploadMultipleFiles(e) {
@@ -33,8 +38,28 @@ class Home extends Component {
 		this.setState({ file: fileArray });
 	}
 
+	handleModal() {
+		this.setState({
+			showModal: !this.state.showModal
+		});
+	}
+
+	handleOk() {
+		this.setState({
+			showModal: !this.state.showModal
+		});
+		this.props.history.push("/listing");
+	}
+
+	handleListing() {
+		this.props.history.push("/listing");
+	}
+
 	uploadFiles(e) {
 		e.preventDefault();
+		this.setState({
+			loading: true
+		});
 		const formData = new FormData();
 		fileObj = fileObj[0];
 		for (let key in fileObj) {
@@ -46,11 +71,15 @@ class Home extends Component {
 			headers: {
 				"Content-Type": "multipart/form-data"
 			},
-			url: `http://localhost:9005/api/images/bulkUpload`,
+			url: `http://localhost:3000/api/images/bulkUpload`,
 			data: formData
 		}).then(res => {
-			console.log(res);
-			console.log(res.data);
+			this.setState({
+				loading: false,
+				showModal: true
+			});
+			fileObj = [];
+			fileArray = [];
 		});
 	}
 
@@ -101,33 +130,63 @@ class Home extends Component {
 	}
 
 	render() {
+		const { loading } = this.state;
+		if (loading) {
+			return (
+				<div style={{ paddingTop: "15%" }}>
+					<LoadingScreen loading={true} size={150} />
+				</div>
+			);
+		}
 		return (
 			<React.Fragment>
 				<div className="homeContainer">
 					<form>
+						<div className="uploadWrapper">
+							<div className="form-group">
+								<input type="file" className="form-control" onChange={this.uploadMultipleFiles} multiple />
+							</div>
+							<div className="uploadBtn">
+								<ButtonField
+									type="primary"
+									btnClass="searchButton"
+									buttonText="Upload"
+									handleChange={this.uploadFiles}
+								/>
+							</div>
+							<div className="backButton">
+								<ButtonField
+									type="primary"
+									btnClass="searchButton"
+									buttonText="Go to gallery"
+									handleChange={this.handleListing}
+								/>
+							</div>
+						</div>
 						<div className="form-group multi-preview preview">
 							{(fileArray || []).map((url, index) => (
-								<div key={index}>
-									<img src={url} height="100px" width="100px" alt="imgPreview" />
-									<input
-										type="text"
-										className="form-control"
-										onChange={event => {
-											this.handleDescription(event, index);
-										}}
-									/>
+								<div className="imagePreview" key={index}>
+									<img src={url} height="200px" width="250px" alt="imgPreview" />
+									<div className="descriptionInput">
+										<input
+											type="text"
+											className="form-control"
+											onChange={event => {
+												this.handleDescription(event, index);
+											}}
+											placeholder="Add Description"
+											className="inputText"
+										/>
+									</div>
 								</div>
 							))}
 						</div>
-
-						<div className="form-group">
-							<input type="file" className="form-control" onChange={this.uploadMultipleFiles} multiple />
-						</div>
-						<button type="button" className="btn btn-danger btn-block" onClick={this.uploadFiles}>
-							Upload
-						</button>
 					</form>
 				</div>
+				<Modal title="Success" visible={this.state.showModal} onCancel={this.handleOk} onOk={this.handleOk}>
+					<p>Image is uploaded successfully</p>
+					<p>Click on the OK Button to see the image listing</p>
+				</Modal>
 			</React.Fragment>
 		);
 	}
@@ -143,4 +202,4 @@ const mapDispatchToProps = dispatch => ({
 	simpleAction: () => dispatch(testAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));
