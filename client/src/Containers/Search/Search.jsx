@@ -20,7 +20,7 @@ class SearchImages extends React.Component {
 			images: [],
 			hasMoreItems: true,
 			pageNumber: 0,
-			pageSize: 5
+			pageSize: 30
 		};
 
 		this.showItems = this.showItems.bind(this);
