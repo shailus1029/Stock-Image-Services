@@ -1,3 +1,9 @@
 node_modules
 package-lock.json
 
+client/npm-debug.log
+
+client/bundle
+
+uploads/
+

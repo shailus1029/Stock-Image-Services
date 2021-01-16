@@ -7,7 +7,7 @@ export default function cred() {
 					name: "stock-image-service",
 					dialect: "postgres",
 					username: "postgres",
-					password: "cronj",
+					password: "password",
 					host: "localhost",
 					port: 5432,
 					backup: false
@@ -22,7 +22,7 @@ export default function cred() {
 					name: "stock-image-service",
 					dialect: "postgres",
 					username: "postgres",
-					password: "cronj",
+					password: "password",
 					host: "localhost",
 					port: 5432,
 					backup: false
@@ -36,7 +36,7 @@ export default function cred() {
 				postgres: {
 					name: "stock-image-service",
 					dialect: "postgres",
-					username: "postgres",
+					username: "password",
 					password: "cronj",
 					host: "localhost",
 					port: 5432,
